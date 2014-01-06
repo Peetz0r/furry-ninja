@@ -50,10 +50,7 @@ if(isset($_GET['ajaj']))
 			}
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script src="//www.google.com/jsapi"></script>
 		<script>
-			google.load("visualization", "1", {packages:["corechart"]});
-
 			plaatsen = new Array();
 			postcodes = new Array();
 
