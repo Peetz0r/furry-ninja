@@ -1,40 +1,41 @@
 <?php
 require_once 'database.php';
 
-/* TODO
- *
- * - labels op de X-as
- * - styling van de ul's en li's
- * - comments
- */
+// AJAJ staat voor Asynchronous JavaScript and JSON
+// dus AJAX maar dan met JSON ipv XML
 
-
+// als dit een AJAJ request is
 if(isset($_GET['ajaj']))
 {
+	// stuur dan de juiste header mee
 	header('Content-Type: application/json');
 
+	// gebruik filter_var voor user input
 	$plaats_id = filter_input(INPUT_GET, 'plaats', FILTER_VALIDATE_INT);
 	$postcode_id = filter_input(INPUT_GET, 'postcode', FILTER_VALIDATE_INT);
+
+	// als we de plaats hebben
 	if($plaats_id)
 	{
+		// vraag dan alle postcodes uit deze plaats uit de database
 		$statement = $db->prepare('SELECT postcode_id, postcode_num FROM postcode WHERE plaats_id = :plaats_id');
 		$statement->bindParam(':plaats_id', $plaats_id, PDO::PARAM_INT);
 		$statement->execute();
-		echo json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
+		// we gebruiken die() om te voorkomen dat er behalve de JSOn nog meer output is
+		die(json_encode($statement->fetchAll(PDO::FETCH_ASSOC)));
 	}
-	elseif($postcode_id)
+
+	// als we de postcode hebben
+	if($postcode_id)
 	{
+		// vraag dan alle aantallen van deze postcode uit de database
 		$statement = $db->prepare('SELECT * FROM aantal WHERE postcode_id = :postcode_id ORDER BY geslacht_id, leeftijd_id');
 		$statement->bindParam(':postcode_id', $postcode_id, PDO::PARAM_INT);
 		$statement->execute();
-		echo json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
+		// we gebruiken die() om te voorkomen dat er behalve de JSOn nog meer output is
+		die(json_encode($statement->fetchAll(PDO::FETCH_ASSOC)));
 	}
-
-	die;
-
 }
-
-
 ?>
 <!doctype html>
 <html>
@@ -51,6 +52,11 @@ if(isset($_GET['ajaj']))
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script>
+			// deze javascript is een beetje snel in
+			// het weekend in elkaar gezet, vandaar
+			// de lelijke nested syntax en de verdere
+			// afwezigheid van comments
+
 			plaatsen = new Array();
 			postcodes = new Array();
 
@@ -102,11 +108,11 @@ if(isset($_GET['ajaj']))
 											height: 300,
 											alt: event.data.postcode_num
 										})).append($('<img/>', {
-											src: 'https://chart.googleapis.com/chart?cht=lc&chco=0000FF,FF0000&chs=300x300&chd='+data_string+'&chxt=x,y&chds=a',
+											src: 'https://chart.googleapis.com/chart?cht=lc&chco=0000FF,FF0000&chs=300x200&chd='+data_string+'&chxt=x,y&chds=a&chf=bg,s,00000000',
 											width: 300,
-											height: 300,
+											height: 200,
 											alt: event.data.postcode_num
-										}).css('margin-left', '2em')));
+										})));
 
 										div.hide();
 										$('#postcode_'+event.data.postcode_id).append(div)
