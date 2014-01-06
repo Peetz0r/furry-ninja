@@ -1,4 +1,6 @@
 <?php
+die('Dit script duurt een half uur ofzo, dus ik heb er eventjes een die(); boven gezet.');
+
 require_once '../database.php';
 
 // truncate alle tables

@@ -21,7 +21,7 @@ if(isset($_GET['ajaj']))
 		$statement = $db->prepare('SELECT postcode_id, postcode_num FROM postcode WHERE plaats_id = :plaats_id');
 		$statement->bindParam(':plaats_id', $plaats_id, PDO::PARAM_INT);
 		$statement->execute();
-		// we gebruiken die() om te voorkomen dat er behalve de JSOn nog meer output is
+		// we gebruiken die() om te voorkomen dat er behalve de JSON nog meer output is
 		die(json_encode($statement->fetchAll(PDO::FETCH_ASSOC)));
 	}
 
@@ -32,7 +32,7 @@ if(isset($_GET['ajaj']))
 		$statement = $db->prepare('SELECT * FROM aantal WHERE postcode_id = :postcode_id ORDER BY geslacht_id, leeftijd_id');
 		$statement->bindParam(':postcode_id', $postcode_id, PDO::PARAM_INT);
 		$statement->execute();
-		// we gebruiken die() om te voorkomen dat er behalve de JSOn nog meer output is
+		// we gebruiken die() om te voorkomen dat er behalve de JSON nog meer output is
 		die(json_encode($statement->fetchAll(PDO::FETCH_ASSOC)));
 	}
 }
@@ -48,6 +48,9 @@ if(isset($_GET['ajaj']))
 			}
 			span {
 				cursor: pointer;
+			}
+			img {
+				margin: 1em;
 			}
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -83,6 +86,8 @@ if(isset($_GET['ajaj']))
 									{
 										var geocode_string = event.data.postcode_num+'%2CThe%20Netherlands';
 
+										var labels_string = '0:|0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|95%2b';
+
 										var data_string = 't:';
 
 										for(var i in data)
@@ -103,14 +108,14 @@ if(isset($_GET['ajaj']))
 											href: 'https://maps.google.nl/maps?q='+geocode_string,
 											target: '_blank'
 										}).append($('<img/>', {
-											src: 'http://maps.googleapis.com/maps/api/staticmap?center='+geocode_string+'&zoom=14&size=300x300&maptype=roadmap&sensor=false',
-											width: 300,
-											height: 300,
+											src: 'http://maps.googleapis.com/maps/api/staticmap?center='+geocode_string+'&zoom=14&size=320x320&maptype=roadmap&sensor=false',
+											width: 320,
+											height: 320,
 											alt: event.data.postcode_num
 										})).append($('<img/>', {
-											src: 'https://chart.googleapis.com/chart?cht=lc&chco=0000FF,FF0000&chs=300x200&chd='+data_string+'&chxt=x,y&chds=a&chf=bg,s,00000000',
-											width: 300,
-											height: 200,
+											src: 'https://chart.googleapis.com/chart?cht=bvg&chco=0000FF,FF0000&chs=480x320&chd='+data_string+'&chxt=x,y&chds=a&chbh=6,2,8&chxl='+labels_string+'&chxp=0,0',
+											width: 480,
+											height: 320,
 											alt: event.data.postcode_num
 										})));
 
