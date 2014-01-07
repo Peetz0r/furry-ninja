@@ -112,12 +112,12 @@ if(isset($_GET['ajaj']))
 											width: 320,
 											height: 320,
 											alt: event.data.postcode_num
-										})).append($('<img/>', {
+										}))).append($('<img/>', {
 											src: 'https://chart.googleapis.com/chart?cht=bvg&chco=0000FF,FF0000&chs=480x320&chd='+data_string+'&chxt=x,y&chds=a&chbh=6,2,8&chxl='+labels_string+'&chxp=0,0',
 											width: 480,
 											height: 320,
 											alt: event.data.postcode_num
-										})));
+										}));
 
 										div.hide();
 										$('#postcode_'+event.data.postcode_id).append(div)
